@@ -2,20 +2,15 @@
 
 Data processing codes for paper 6L-CUT&Tag
 
-Make sure that the following dependencies are installed:
+Requirements:
 
-	•	python (>= version 3.4)
-	•	R (>= 3.4.3)
-	•	pairtools (https://github.com/open2c/pairtools)
-	•	samtools (version >= 1.5) 
-	•	bedtools (version >= 2.26.0) 
-	•	deeptools
+	•	demuxFQ (3.1.0)
+	•	FastQC (0.11.8)
+	•	MultiQC (1.18)
+	•	Picard (2.20.3)
+	•	samtools (1.18) 
+	•	bedtools (2.31.0)
 	•	bwa
-	•	tabulate
-	•	matplotlib
-	•	pandas
-	•	numpy
- 	•	FitHiChIP is hosted in https://github.com/ay-lab/FitHiChIP
-
-  
-
+	•	SEACR (1.3)
+	•	deepTools (3.5.5)
+	
