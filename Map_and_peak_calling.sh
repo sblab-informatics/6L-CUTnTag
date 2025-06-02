@@ -36,19 +36,19 @@ done
 
 for file in *merged*.bam
 do
-#sbatch --time 12:00:00 --mem 4G  -p epyc --wrap "bamCoverage --bam $file -o ${file%%bam}.s150.cpm.bs3.bw --binSize 10--normalizeUsing CPM  --extendReads --maxFragmentLength 150 --smoothLength 9 "
-sbatch --time 02:00:00 --mem 4G  -p epyc --wrap "bamCoverage --bam $file -o ${file%%bam}.150.cpm.bs3.bw --binSize 10--normalizeUsing CPM  --extendReads --maxFragmentLength 150"
-sbatch --time 02:00:00 --mem 4G  -p epyc --wrap "bamCoverage --bam $file -o ${file%%bam}.120.cpm.bs3.bw --binSize 10--normalizeUsing CPM  --extendReads --maxFragmentLength 120"
-sbatch --time 02:00:00 --mem 4G  -p epyc --wrap "bamCoverage --bam $file -o ${file%%bam}.130.cpm.bs3.bw --binSize 10--normalizeUsing CPM  --extendReads --maxFragmentLength 130"
+#sbatch --time 12:00:00 --mem 4G  -p epyc --wrap "bamCoverage --bam $file -o ${file%%bam}.s150.cpm.bs10.bw --binSize 10 --normalizeUsing CPM  --extendReads --maxFragmentLength 150 --smoothLength 9 "
+sbatch --time 02:00:00 --mem 4G  -p epyc --wrap "bamCoverage --bam $file -o ${file%%bam}.150.cpm.bs10.bw --binSize 10 --normalizeUsing CPM  --extendReads --maxFragmentLength 150"
+sbatch --time 02:00:00 --mem 4G  -p epyc --wrap "bamCoverage --bam $file -o ${file%%bam}.120.cpm.bs10.bw --binSize 10 --normalizeUsing CPM  --extendReads --maxFragmentLength 120"
+sbatch --time 02:00:00 --mem 4G  -p epyc --wrap "bamCoverage --bam $file -o ${file%%bam}.130.cpm.bs10.bw --binSize 10 --normalizeUsing CPM  --extendReads --maxFragmentLength 130"
 
-#sbatch --time 12:00:00 --mem 4G  -p epyc --wrap "bamCoverage --bam $file -o ${file%%bam}.s350.cpm.bs3.bw --binSize 10--normalizeUsing CPM  --extendReads --maxFragmentLength 350 --smoothLength 9 "
-sbatch --time 02:00:00 --mem 4G -p epyc --wrap "bamCoverage --bam $file -o ${file%%bam}.350.cpm.bs3.bw --binSize 10--normalizeUsing CPM  --extendReads --maxFragmentLength 350"
+#sbatch --time 12:00:00 --mem 4G  -p epyc --wrap "bamCoverage --bam $file -o ${file%%bam}.s350.cpm.bs10.bw --binSize 10 --normalizeUsing CPM  --extendReads --maxFragmentLength 350 --smoothLength 9 "
+sbatch --time 02:00:00 --mem 4G -p epyc --wrap "bamCoverage --bam $file -o ${file%%bam}.350.cpm.bs10.bw --binSize 10 --normalizeUsing CPM  --extendReads --maxFragmentLength 350"
 
-#sbatch --time 12:00:00 --mem 4G  -p epyc --wrap "bamCoverage --bam $file -o ${file%%bam}.s600.cpm.bs3.bw --binSize 10--normalizeUsing CPM  --extendReads --maxFragmentLength 600 --smoothLength 9 "
-#sbatch --time 02:00:00 --mem 4G  -p epyc --wrap "bamCoverage --bam $file -o ${file%%bam}.600.cpm.bs3.bw --binSize 10--normalizeUsing CPM  --extendReads --maxFragmentLength 600"
+#sbatch --time 12:00:00 --mem 4G  -p epyc --wrap "bamCoverage --bam $file -o ${file%%bam}.s600.cpm.bs10.bw --binSize 10 --normalizeUsing CPM  --extendReads --maxFragmentLength 600 --smoothLength 9 "
+#sbatch --time 02:00:00 --mem 4G  -p epyc --wrap "bamCoverage --bam $file -o ${file%%bam}.600.cpm.bs10.bw --binSize 10 --normalizeUsing CPM  --extendReads --maxFragmentLength 600"
 
-#sbatch --time 12:00:00 --mem 4G  -p epyc --wrap "bamCoverage --bam $file -o ${file%%bam}.s250.cpm.bs3.bw --binSize 10--normalizeUsing CPM  --extendReads --maxFragmentLength 250 --smoothLength 9 "
-sbatch --time 02:00:00 --mem 4G  -p epyc --wrap "bamCoverage --bam $file -o ${file%%bam}.250.cpm.bs3.bw --binSize 10--normalizeUsing CPM  --extendReads --maxFragmentLength 250"
+#sbatch --time 12:00:00 --mem 4G  -p epyc --wrap "bamCoverage --bam $file -o ${file%%bam}.s250.cpm.bs10.bw --binSize 10 --normalizeUsing CPM  --extendReads --maxFragmentLength 250 --smoothLength 9 "
+sbatch --time 02:00:00 --mem 4G  -p epyc --wrap "bamCoverage --bam $file -o ${file%%bam}.250.cpm.bs10.bw --binSize 10 --normalizeUsing CPM  --extendReads --maxFragmentLength 250"
 done
 
 
