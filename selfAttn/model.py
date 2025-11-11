@@ -30,7 +30,7 @@ class AttnBlock(nn.Module):
 
         return x, w_att
 
-class TransHMC(nn.Module):
+class enhancerHMC(nn.Module):
     def __init__(self, args):
         super().__init__()
 
