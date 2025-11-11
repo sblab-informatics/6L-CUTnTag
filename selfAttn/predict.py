@@ -45,11 +45,8 @@ def predict(model, pred_loader, opath, device):
 
 # ===============
 
-def load_data(args, ipath):
-
-    # fin = open('/home/xuan/Projects/MLfor6lCnT/data/WG_control_in_enhancers_modC.pkl', 'rb')
-    # fin = open('/home/xuan/Projects/MLfor6lCnT/data/H3K4Me1_6L_in_enhancers_modC.pkl', 'rb')
-    fin = open(ipath, 'rb')
+def load_data(args):
+    fin = open(args.input, 'rb')
     datadic = pickle.load(fin)
     fin.close()
 
@@ -117,6 +114,8 @@ def fix_random_seed(seed):
 def get_args():
     parser = argparse.ArgumentParser(description='Attention-based model for enhancer classification from 6L-CnT')
 
+    parser.add_argument('--input', type=str, default='', help='Path to the data dumped by pickle')
+
     parser.add_argument('--device', type=int, default=0, help='GPU index')
     parser.add_argument('--num-workers', type=int, default=4)
     parser.add_argument('--batch-size', type=int, default=64)
@@ -153,8 +152,7 @@ def main():
     print(args)
 
     fix_random_seed(args.random_seed)
-    data1 = load_data(args, '/home/xuan/Projects/MLfor6lCnT/data/WG_control_in_enhancers_modC.pkl')
-    data2 = load_data(args, '/home/xuan/Projects/MLfor6lCnT/data/H3K4Me1_6L_in_enhancers_modC.pkl')
+    data = load_data(args)
 
     cpt_dir = f"checkpoints/checkpoints_with_random_seed{args.random_seed}"
     pred_dir = f"predictions/predictions_with_random_seed{args.random_seed}"
@@ -164,25 +162,16 @@ def main():
     if not os.path.exists(pred_dir):
         os.makedirs(pred_dir)
 
-    allset1 = HMCDataset(data1)
-    allloader1 = DataLoader(allset1, batch_size=args.batch_size, num_workers=args.num_workers, shuffle=False, pin_memory=True)
-    allset2 = HMCDataset(data2)
-    allloader2 = DataLoader(allset2, batch_size=args.batch_size, num_workers=args.num_workers, shuffle=False, pin_memory=True)
+    allset = HMCDataset(data)
+    allloader = DataLoader(allset, batch_size=args.batch_size, num_workers=args.num_workers, shuffle=False, pin_memory=True)
+    state_dict = torch.load(f"{cpt_dir}/WG6L_model_at_epoch20.cpt")['model_state_dict']
 
-    state_dict1 = torch.load(f"{cpt_dir}/WG6L_model_at_epoch20.cpt")['model_state_dict']
-    state_dict2 = torch.load(f"{cpt_dir}/CnT6L_model_at_epoch22.cpt")['model_state_dict']
+    transhmc = TransHMC(args).to(args.device)
+    transhmc.load_state_dict(state_dict)
 
-    transhmc1 = TransHMC(args).to(args.device)
-    transhmc1.load_state_dict(state_dict1)
-    transhmc2 = TransHMC(args).to(args.device)
-    transhmc2.load_state_dict(state_dict2)
-        
-    # pred_path = f"{pred_dir}/model_at_epoch{best_epoch+1}_pred.pkl"
-    path1 = f"{pred_dir}/6LWG_predictions_attn.pkl"
-    path2 = f"{pred_dir}/6LCnT_predictions_attn.pkl"
+    opath = f"{pred_dir}/6LWG_predictions_attn.pkl"
 
-    predict(transhmc1, allloader1, path1, args.device)
-    predict(transhmc2, allloader2, path2, args.device)
+    predict(transhmc, allloader, opath, args.device)
 
 if __name__ == '__main__':
 
