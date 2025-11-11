@@ -202,10 +202,10 @@ def main():
     state_dict1 = torch.load(f"{cpt_dir}/WG6L_model_at_epoch20.cpt")['model_state_dict']
     state_dict2 = torch.load(f"{cpt_dir}/CnT6L_model_at_epoch22.cpt")['model_state_dict']
 
-    transhmc1 = enhancerHMC(args).to(args.device)
-    transhmc1.load_state_dict(state_dict1)
-    transhmc2 = enhancerHMC(args).to(args.device)
-    transhmc2.load_state_dict(state_dict2)
+    enhancer_hmc1 = enhancerHMC(args).to(args.device)
+    enhancer_hmc1.load_state_dict(state_dict1)
+    enhancer_hmc2 = enhancerHMC(args).to(args.device)
+    enhancer_hmc2.load_state_dict(state_dict2)
         
     # pred_path = f"{pred_dir}/model_at_epoch{best_epoch+1}_pred.pkl"
     path1 = "chr1_6LWG_predictions_by_model_trained_on_6LWG.txt"
@@ -213,14 +213,14 @@ def main():
     path3 = "chr1_6LWG_predictions_by_model_trained_on_6LCnT.txt"
     path4 = "chr1_6LCnT_predictions_by_model_trained_on_6LWG.txt"
 
-    ttacc1, ttf1 = predict(transhmc1, testloader1, path1, args.device)
-    ttacc2, ttf2 = predict(transhmc2, testloader2, path2, args.device)
+    ttacc1, ttf1 = predict(enhancer_hmc1, testloader1, path1, args.device)
+    ttacc2, ttf2 = predict(enhancer_hmc2, testloader2, path2, args.device)
     print(f'acc: {ttacc1:.4f}, {ttacc2:.4f}; f1: {ttf1:.4f}, {ttf2:.4f}')
     print('='*80)
 
     print("Cross-data test:")
-    ttacc1, ttf1 = predict(transhmc2, testloader1, path4, args.device)
-    ttacc2, ttf2 = predict(transhmc1, testloader2, path3, args.device)
+    ttacc1, ttf1 = predict(enhancer_hmc2, testloader1, path4, args.device)
+    ttacc2, ttf2 = predict(enhancer_hmc1, testloader2, path3, args.device)
     print(f'acc: {ttacc1:.4f}, {ttacc2:.4f}; f1: {ttf1:.4f}, {ttf2:.4f}')
     print('='*80)
 
