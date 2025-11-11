@@ -23,5 +23,7 @@ The self-attention model was constructed with PyTorch (2.5.1) on CUDA (12.4). Ot
 	
 Prediction:
 ```shell
-python predict.py --input [your data path]
+python predict.py --input [your data path] --cpt [select a model from checkpoints]
 ```
+- ```checkpoints/CnT6L_model_at_epoch22.cpt```: model trianed on the 6L-CUT&Tag data.
+- ```checkpoints/WG6L_model_at_epoch20.cpt```: model trained on the whole-genome data.
