@@ -22,7 +22,7 @@ from torch.utils.data import DataLoader
 from dataset import HMCDataset
 
 # customized modules
-from model import TransHMC
+from model import enhancerHMC
 # ================
 
 def train(model, train_loader, lossfn, optimizer, schedular, device):
@@ -229,7 +229,7 @@ def main():
     testset = HMCDataset(ttdata)
     testloader = DataLoader(testset, batch_size=args.batch_size, num_workers=args.num_workers, shuffle=False, pin_memory=True)
 
-    transhmc = TransHMC(args).to(args.device)
+    enhancer_hmc = enhancerHMC(args).to(args.device)
 
     w1 = len(trdata[-1])/ np.sum(trdata[-1] == 0)
     w2 = len(trdata[-1])/ np.sum(trdata[-1] == 1)
@@ -238,16 +238,16 @@ def main():
     
     celoss = nn.CrossEntropyLoss(weight=Wcls)
 
-    optimizer = torch.optim.Adam(transhmc.parameters(), lr=args.lr, weight_decay=args.weight_decay)
+    optimizer = torch.optim.Adam(enhancer_hmc.parameters(), lr=args.lr, weight_decay=args.weight_decay)
     schedular = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, args.epochs, 0.7 * args.lr)
 
     # min_loss = 1e10
     max_acc = 0
     best_epoch = 0
-    best_transhmc = copy.deepcopy(transhmc.state_dict())
+    best_enhancer_hmc = copy.deepcopy(enhancer_hmc.state_dict())
     for epoch in range(args.epochs):
-        trloss, tracc, trf1 = train(transhmc, trainloader, celoss, optimizer, schedular, args.device)
-        valoss, vaacc, vaf1 = test(transhmc, validloader, celoss, args.device)
+        trloss, tracc, trf1 = train(enhancer_hmc, trainloader, celoss, optimizer, schedular, args.device)
+        valoss, vaacc, vaf1 = test(enhancer_hmc, validloader, celoss, args.device)
         print(f'Epoch:{epoch}; loss: {trloss:.4f}, {valoss:.4f}; acc: {tracc:.4f}, {vaacc:.4f}; f1: {trf1:.4f}, {vaf1:.4f}')
         print('='*80)
         
@@ -256,24 +256,24 @@ def main():
             # min_loss = ttloss
             max_acc = vaf1
             best_epoch = epoch
-            best_transhmc = copy.deepcopy(transhmc.state_dict())
+            best_enhancer_hmc = copy.deepcopy(enhancer_hmc.state_dict())
         else:
             if epoch - best_epoch >= args.patience:
                 # print(f'=== Break at epoch {best_epoch + 1} ===')
                 break
     
-    transhmc.load_state_dict(best_transhmc)
+    enhancer_hmc.load_state_dict(best_enhancer_hmc)
         
     # cpt_path = f"{cpt_dir}/CnT6L_model_at_epoch{best_epoch+1}.cpt"
     cpt_path = f"{cpt_dir}/WG6L_model_at_epoch{best_epoch+1}.cpt"
     torch.save({
         'epoch': best_epoch + 1,
-        'model_state_dict': transhmc.state_dict(),
+        'model_state_dict': enhancer_hmc.state_dict(),
         'acc': max_acc,
     }, cpt_path)
         
     # pred_path = f"{pred_dir}/model_at_epoch{best_epoch+1}_pred.pkl"
-    ttloss, ttacc, ttf1 = test(transhmc, testloader, celoss, args.device)
+    ttloss, ttacc, ttf1 = test(enhancer_hmc, testloader, celoss, args.device)
     print(f'Epoch:{best_epoch+1}; loss: {ttloss:.4f}; acc: {ttacc:.4f}; f1: {ttf1:.4f}')
 
 if __name__ == '__main__':
