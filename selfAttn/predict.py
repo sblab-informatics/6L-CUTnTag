@@ -115,6 +115,7 @@ def get_args():
     parser = argparse.ArgumentParser(description='Attention-based model for enhancer classification from 6L-CnT')
 
     parser.add_argument('--input', type=str, default='', help='Path to the data dumped by pickle')
+    parser.add_argument('--cpt', type=str, default='checkpoints/WG6L_model_at_epoch20.cpt', help='Path to the trained model')
 
     parser.add_argument('--device', type=int, default=0, help='GPU index')
     parser.add_argument('--num-workers', type=int, default=4)
@@ -154,8 +155,7 @@ def main():
     fix_random_seed(args.random_seed)
     data = load_data(args)
 
-    cpt_dir = f"checkpoints/checkpoints_with_random_seed{args.random_seed}"
-    pred_dir = f"predictions/predictions_with_random_seed{args.random_seed}"
+    pred_dir = f"predictions"
 
     if not os.path.exists(cpt_dir):
         os.makedirs(cpt_dir)
@@ -164,7 +164,7 @@ def main():
 
     allset = HMCDataset(data)
     allloader = DataLoader(allset, batch_size=args.batch_size, num_workers=args.num_workers, shuffle=False, pin_memory=True)
-    state_dict = torch.load(f"{cpt_dir}/WG6L_model_at_epoch20.cpt")['model_state_dict']
+    state_dict = torch.load(f"{args.cpt}")['model_state_dict']
 
     transhmc = TransHMC(args).to(args.device)
     transhmc.load_state_dict(state_dict)
