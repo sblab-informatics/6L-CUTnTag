@@ -19,7 +19,7 @@ from torch.utils.data import DataLoader
 from dataset import HMCDataset
 
 # customized modules
-from model import TransHMC
+from model import enhancerHMC
 # ================
 
 def predict(model, pred_loader, opath, device):
@@ -202,9 +202,9 @@ def main():
     state_dict1 = torch.load(f"{cpt_dir}/WG6L_model_at_epoch20.cpt")['model_state_dict']
     state_dict2 = torch.load(f"{cpt_dir}/CnT6L_model_at_epoch22.cpt")['model_state_dict']
 
-    transhmc1 = TransHMC(args).to(args.device)
+    transhmc1 = enhancerHMC(args).to(args.device)
     transhmc1.load_state_dict(state_dict1)
-    transhmc2 = TransHMC(args).to(args.device)
+    transhmc2 = enhancerHMC(args).to(args.device)
     transhmc2.load_state_dict(state_dict2)
         
     # pred_path = f"{pred_dir}/model_at_epoch{best_epoch+1}_pred.pkl"
