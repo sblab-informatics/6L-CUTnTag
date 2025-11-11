@@ -19,7 +19,7 @@ from torch.utils.data import DataLoader
 from dataset import HMCDataset
 
 # customized modules
-from model import TransHMC
+from model import enhancerHMC
 # ================
 
 def predict(model, pred_loader, opath, device):
@@ -166,7 +166,7 @@ def main():
     allloader = DataLoader(allset, batch_size=args.batch_size, num_workers=args.num_workers, shuffle=False, pin_memory=True)
     state_dict = torch.load(f"{args.cpt}")['model_state_dict']
 
-    transhmc = TransHMC(args).to(args.device)
+    transhmc = enhancerHMC(args).to(args.device)
     transhmc.load_state_dict(state_dict)
 
     opath = f"{pred_dir}/6LWG_predictions_attn.pkl"
