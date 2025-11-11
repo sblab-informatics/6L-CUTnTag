@@ -166,12 +166,12 @@ def main():
     allloader = DataLoader(allset, batch_size=args.batch_size, num_workers=args.num_workers, shuffle=False, pin_memory=True)
     state_dict = torch.load(f"{args.cpt}")['model_state_dict']
 
-    transhmc = enhancerHMC(args).to(args.device)
-    transhmc.load_state_dict(state_dict)
+    enhancer_hmc = enhancerHMC(args).to(args.device)
+    enhancer_hmc.load_state_dict(state_dict)
 
     opath = f"{pred_dir}/6LWG_predictions_attn.pkl"
 
-    predict(transhmc, allloader, opath, args.device)
+    predict(enhancer_hmc, allloader, opath, args.device)
 
 if __name__ == '__main__':
 
