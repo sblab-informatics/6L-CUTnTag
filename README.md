@@ -21,3 +21,7 @@ The self-attention model was constructed with PyTorch (2.5.1) on CUDA (12.4). Ot
 - torchsnooper (0.8)
 - pickle (4.0)
 	
+Prediction:
+```shell
+python predict.py --input [your data path]
+```
