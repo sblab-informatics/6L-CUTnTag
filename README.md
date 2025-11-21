@@ -13,6 +13,9 @@ Requirements:
 	•	bwa
 	•	SEACR (1.3)
 	•	deepTools (3.5.5)
+	•	Bismark (v0.24.0)
+	•	Macs2 (2.2.7.1)
+
 
 The self-attention model was constructed with PyTorch (2.5.1) on CUDA (12.4). Other Python packages used in the model training, evaluation and testing includes:
 - NumPy (1.26.4)
