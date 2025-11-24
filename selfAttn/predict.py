@@ -112,10 +112,10 @@ def fix_random_seed(seed):
     torch.backends.cudnn.deterministic = True
  
 def get_args():
-    parser = argparse.ArgumentParser(description='Attention-based model for enhancer classification from 6L-CnT')
+    parser = argparse.ArgumentParser(description='Attention-based model for enhancer classification from 6B-CnT')
 
     parser.add_argument('--input', type=str, default='', help='Path to the data dumped by pickle')
-    parser.add_argument('--cpt', type=str, default='checkpoints/WG6L_model_at_epoch20.cpt', help='Path to the trained model')
+    parser.add_argument('--cpt', type=str, default='checkpoints/WG6B_model_at_epoch20.cpt', help='Path to the trained model')
 
     parser.add_argument('--device', type=int, default=0, help='GPU index')
     parser.add_argument('--num-workers', type=int, default=4)
@@ -169,7 +169,7 @@ def main():
     enhancer_hmc = enhancerHMC(args).to(args.device)
     enhancer_hmc.load_state_dict(state_dict)
 
-    opath = f"{pred_dir}/6LWG_predictions_attn.pkl"
+    opath = f"{pred_dir}/6BWG_predictions_attn.pkl"
 
     predict(enhancer_hmc, allloader, opath, args.device)
 
