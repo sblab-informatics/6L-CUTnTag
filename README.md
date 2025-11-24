@@ -29,5 +29,5 @@ Prediction:
 cd selfAttn
 python predict.py --input [your data path] --cpt [select a model from checkpoints]
 ```
-- ```checkpoints/CnT6L_model_at_epoch22.cpt```: model trianed on the 6B-CUT&Tag data.
-- ```checkpoints/WG6L_model_at_epoch20.cpt```: model trained on the whole-genome data.
+- ```checkpoints/CnT6B_model_at_epoch22.cpt```: model trianed on the 6B-CUT&Tag data.
+- ```checkpoints/WG6B_model_at_epoch20.cpt```: model trained on the whole-genome data.
