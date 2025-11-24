@@ -87,8 +87,7 @@ def test(model, test_loader, lossfn, device):
 
 def load_data(args):
 
-    fin = open('/home/xuan/Projects/MLfor6lCnT/data/WG_control_in_enhancers_modC.pkl', 'rb')
-    # fin = open('/home/xuan/Projects/MLfor6lCnT/data/H3K4Me1_6L_in_enhancers_modC.pkl', 'rb')
+    fin = open('data/WG_control_in_enhancers_modC.pkl', 'rb')
     datadic = pickle.load(fin)
     fin.close()
 
@@ -154,7 +153,7 @@ def fix_random_seed(seed):
     torch.backends.cudnn.deterministic = True
  
 def get_args():
-    parser = argparse.ArgumentParser(description='Attention-based model for enhancer classification from 6L-CnT')
+    parser = argparse.ArgumentParser(description='Attention-based model for enhancer classification from 6B-CnT')
 
     parser.add_argument('--device', type=int, default=0, help='GPU index')
     parser.add_argument('--num-workers', type=int, default=4)
@@ -194,13 +193,10 @@ def main():
     fix_random_seed(args.random_seed)
     data = load_data(args)
 
-    cpt_dir = f"checkpoints/checkpoints_with_random_seed{args.random_seed}"
-    # pred_dir = f"predictions/predictions_with_random_seed{args.random_seed}"
+    cpt_dir = "checkpoints"
 
     if not os.path.exists(cpt_dir):
         os.makedirs(cpt_dir)
-    # if not os.path.exists(pred_dir):
-    #     os.makedirs(pred_dir)
 
     tridxs, vaidxs, ttidxs = [], [], []
     for i in range(len(data[0])):
@@ -264,8 +260,8 @@ def main():
     
     enhancer_hmc.load_state_dict(best_enhancer_hmc)
         
-    # cpt_path = f"{cpt_dir}/CnT6L_model_at_epoch{best_epoch+1}.cpt"
-    cpt_path = f"{cpt_dir}/WG6L_model_at_epoch{best_epoch+1}.cpt"
+    # cpt_path = f"{cpt_dir}/CnT6B_model_at_epoch{best_epoch+1}.cpt"
+    cpt_path = f"{cpt_dir}/WG6B_model_at_epoch{best_epoch+1}.cpt"
     torch.save({
         'epoch': best_epoch + 1,
         'model_state_dict': enhancer_hmc.state_dict(),
