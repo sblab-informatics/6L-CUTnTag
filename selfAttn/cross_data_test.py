@@ -58,9 +58,6 @@ def predict(model, pred_loader, opath, device):
 # ===============
 
 def load_data(args, ipath):
-
-    # fin = open('/home/xuan/Projects/MLfor6lCnT/data/WG_control_in_enhancers_modC.pkl', 'rb')
-    # fin = open('/home/xuan/Projects/MLfor6lCnT/data/H3K4Me1_6L_in_enhancers_modC.pkl', 'rb')
     fin = open(ipath, 'rb')
     datadic = pickle.load(fin)
     fin.close()
@@ -127,7 +124,7 @@ def fix_random_seed(seed):
     torch.backends.cudnn.deterministic = True
  
 def get_args():
-    parser = argparse.ArgumentParser(description='Attention-based model for enhancer classification from 6L-CnT')
+    parser = argparse.ArgumentParser(description='Attention-based model for enhancer classification from 6B-CnT')
 
     parser.add_argument('--device', type=int, default=0, help='GPU index')
     parser.add_argument('--num-workers', type=int, default=4)
@@ -165,8 +162,8 @@ def main():
     print(args)
 
     fix_random_seed(args.random_seed)
-    data1 = load_data(args, '/home/xuan/Projects/MLfor6lCnT/data/WG_control_in_enhancers_modC.pkl')
-    data2 = load_data(args, '/home/xuan/Projects/MLfor6lCnT/data/H3K4Me1_6L_in_enhancers_modC.pkl')
+    data1 = load_data(args, 'data/WG_control_in_enhancers_modC.pkl')
+    data2 = load_data(args, 'data/H3K4Me1_6B_in_enhancers_modC.pkl')
 
     cpt_dir = f"checkpoints/checkpoints_with_random_seed{args.random_seed}"
     # pred_dir = f"predictions/predictions_with_random_seed{args.random_seed}"
@@ -199,8 +196,8 @@ def main():
     testset2 = HMCDataset(ttdata2)
     testloader2 = DataLoader(testset2, batch_size=args.batch_size, num_workers=args.num_workers, shuffle=False, pin_memory=True)
 
-    state_dict1 = torch.load(f"{cpt_dir}/WG6L_model_at_epoch20.cpt")['model_state_dict']
-    state_dict2 = torch.load(f"{cpt_dir}/CnT6L_model_at_epoch22.cpt")['model_state_dict']
+    state_dict1 = torch.load(f"{cpt_dir}/WG6B_model_at_epoch20.cpt")['model_state_dict']
+    state_dict2 = torch.load(f"{cpt_dir}/CnT6B_model_at_epoch22.cpt")['model_state_dict']
 
     enhancer_hmc1 = enhancerHMC(args).to(args.device)
     enhancer_hmc1.load_state_dict(state_dict1)
@@ -208,10 +205,10 @@ def main():
     enhancer_hmc2.load_state_dict(state_dict2)
         
     # pred_path = f"{pred_dir}/model_at_epoch{best_epoch+1}_pred.pkl"
-    path1 = "chr1_6LWG_predictions_by_model_trained_on_6LWG.txt"
-    path2 = "chr1_6LCnT_predictions_by_model_trained_on_6LCnT.txt"
-    path3 = "chr1_6LWG_predictions_by_model_trained_on_6LCnT.txt"
-    path4 = "chr1_6LCnT_predictions_by_model_trained_on_6LWG.txt"
+    path1 = "chr1_6BWG_predictions_by_model_trained_on_6BWG.txt"
+    path2 = "chr1_6BCnT_predictions_by_model_trained_on_6BCnT.txt"
+    path3 = "chr1_6BWG_predictions_by_model_trained_on_6BCnT.txt"
+    path4 = "chr1_6BCnT_predictions_by_model_trained_on_6BWG.txt"
 
     ttacc1, ttf1 = predict(enhancer_hmc1, testloader1, path1, args.device)
     ttacc2, ttf2 = predict(enhancer_hmc2, testloader2, path2, args.device)
